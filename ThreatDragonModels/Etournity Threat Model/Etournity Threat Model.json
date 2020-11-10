@@ -70,6 +70,13 @@
                   "type": "Elevation of privilege",
                   "description": "",
                   "mitigation": "React protects us from many forms of XSS attacks and we're avoiding react's `dangerouslySetInnerHTML` feature.\nFurther, we employ very strict Content Security Policy.\n\nOne Scenario for XSS would be hijacking Googles Fonts or Tag-Manager services since these are the only allowed external scripts. These however are out of scope."
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Low",
+                  "title": "Leaking Referrer Information",
+                  "type": "Information disclosure",
+                  "mitigation": "We utilize the Referrer-Policy header to completely prevent the browser from leaking information to websites we link to."
                 }
               ],
               "attrs": {
@@ -316,13 +323,22 @@
               "isEncrypted": true,
               "isPublicNetwork": true,
               "protocol": "HTTP/S",
-              "outOfScope": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "title": "Insecure SSL Versions/Cyphers and SSL Certificate Security",
+                  "type": "Tampering",
+                  "mitigation": "- We have configured Cloudflare to prevent Clients using insecure cyphers and TLS Versions below TLS 1.2 from connecting.\n\n- We utilize the Expect-CT Header and have Certificate Monitoring setup to prevent and monitor the issuing of unauthorized SSL certificates. \n\n- Further, we add HTTP Strict Transport Security (HSTS) headers to our requests  to mitigate downgrade and session hijacking attacks."
+                }
+              ],
               "attrs": {
                 ".marker-target": {
                   "class": "marker-target hasNoOpenThreats isInScope"
                 },
                 ".connection": {
-                  "class": "connection hasNoOpenThreats isOutOfScope"
+                  "class": "connection hasNoOpenThreats isInScope"
                 }
               }
             },
@@ -344,7 +360,10 @@
               "id": "424aca2d-87c9-4895-b140-272e941ee5c4",
               "labels": [
                 {
-                  "position": 0.5,
+                  "position": {
+                    "distance": 0.4672798781038012,
+                    "offset": 13.928066319966279
+                  },
                   "attrs": {
                     "text": {
                       "text": "API Response",
@@ -359,13 +378,13 @@
               "isEncrypted": true,
               "isPublicNetwork": true,
               "protocol": "HTTP/S",
-              "outOfScope": true,
+              "outOfScope": false,
               "attrs": {
                 ".marker-target": {
                   "class": "marker-target hasNoOpenThreats isInScope"
                 },
                 ".connection": {
-                  "class": "connection hasNoOpenThreats isOutOfScope"
+                  "class": "connection hasNoOpenThreats isInScope"
                 }
               }
             },
@@ -401,8 +420,8 @@
               },
               "vertices": [
                 {
-                  "x": 485,
-                  "y": 265
+                  "x": 511,
+                  "y": 309
                 }
               ],
               "id": "4ed5597a-cb97-4971-91f2-abad50d3c5cd",
@@ -453,8 +472,8 @@
               },
               "vertices": [
                 {
-                  "x": 435,
-                  "y": 316
+                  "x": 483,
+                  "y": 343
                 }
               ],
               "id": "44bde292-7a3c-41ec-a15b-839b8467987a",
@@ -514,6 +533,29 @@
                   "title": "Inconsistent Authorization Checks",
                   "description": "There are multiple different paths to access data using a graphql query and this can lead to instances where users can request information they shouldn't have access to.\n\nThis has led to the possible exposure of sensitive user information in early version of the platform.",
                   "mitigation": "This has been mitigated by using graphql-shield combined with our own rbac implementation to protect resources on a per-field basis."
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "title": "Components with Known Vulnerabilities",
+                  "type": "Tampering",
+                  "mitigation": "- We are using dependabot for automated dependency updates when packages we are using have a known voulnabillity\n- We pin all dependencies to a specific version and use a lockfile to mitigate issues like NPM libraries getting updated to include malicious code.",
+                  "description": "From OWASP.org:\nComponents, such as libraries, frameworks, and other software modules, run with the same privileges as the application. If a vulnerable component is exploited, such an attack can facilitate serious data loss or server takeover. Applications and APIs using components with known vulnerabilities may undermine application defenses and enable various attacks and impacts."
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Docker Security Issues",
+                  "type": "Elevation of privilege",
+                  "mitigation": "- We mitigate most common Docker Security issues by using Amazon Elastic Container Service, a managed docker solution that handles security updates for our docker runtime and protects from process escalation outside the containers. \n- Our docker images are also hosted on AWSs container registry and can only be updated through our CI-workflow\n- We use a minimal, trusted base image for our images to decrease the attack vector by not including unneccecary software.\n\n\n-"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Basic Denial of Service",
+                  "type": "Denial of service",
+                  "description": "Basic Denial of Service attacks, like flooding our server with hundreds of requests (This doesn't include brute force attacks like password guessing, since this is currently only handled over OAuth by Discord)",
+                  "mitigation": "- We have a basic, in memory rate limiter setup, which limits on a per-ip basis to 10 requests per second (This mostly to protect us from misconfigured clients)\n- We utilize Cloudflare as a reverse-proxy, which mitigates large-scale Denial of Service Attacks for us"
                 }
               ],
               "attrs": {
@@ -848,6 +890,16 @@
               ],
               "z": 26,
               "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "title": "SQL Injections",
+                  "type": "Elevation of privilege",
+                  "description": "A request might be malformed and an attacker’s hostile data could trick the interpreter into executing unintended commands or accessing data without proper authorization.",
+                  "mitigation": "Our query builder (prisma) automatically escapes all inputs (we trust it to do this correctly), and we don't use raw SQL statements."
+                }
+              ],
               "attrs": {
                 ".marker-target": {
                   "class": "marker-target hasNoOpenThreats isInScope"
