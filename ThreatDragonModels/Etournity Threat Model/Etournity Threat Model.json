@@ -26,12 +26,14 @@
               "id": "a81c8265-55c9-4b22-80c7-52abc1b3ccfd",
               "z": 1,
               "hasOpenThreats": false,
+              "outOfScope": true,
+              "reasonOutOfScope": "Netlify handles our static and dynamically generated files and has no access to sensitive data.  We however trust them not to change our client-side code.",
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasNoOpenThreats isOutOfScope"
                 },
                 "text": {
-                  "text": "Static &\nDynamically\ngenerated\nWebsite Files"
+                  "text": "Netlify"
                 },
                 ".element-text": {
                   "class": "element-text hasNoOpenThreats isInScope"
@@ -52,6 +54,24 @@
               "id": "ca1a0390-cdc8-4b41-8be2-0fcc13ee6c6d",
               "z": 2,
               "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "type": "Spoofing",
+                  "title": "CSRF Attacks",
+                  "description": "Malicious parties could forge requests to include cookies with our authentication tokens in requests to our API.",
+                  "mitigation": "Our backend is using a separate domain without access to the cookies and CORS headers only allowing the frontend's domain. Further, all API actions are required to only use application/json body, which mitigates XHR-based CSRF Attacks."
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "title": "XSS Attacks",
+                  "type": "Elevation of privilege",
+                  "description": "",
+                  "mitigation": "React protects us from many forms of XSS attacks and we're avoiding react's `dangerouslySetInnerHTML` feature.\nFurther, we employ very strict Content Security Policy.\n\nOne Scenario for XSS would be hijacking Googles Fonts or Tag-Manager services since these are the only allowed external scripts. These however are out of scope."
+                }
+              ],
               "attrs": {
                 ".element-shape": {
                   "class": "element-shape hasNoOpenThreats isInScope"
@@ -184,9 +204,10 @@
               "z": 6,
               "hasOpenThreats": false,
               "isSigned": false,
+              "outOfScope": true,
               "attrs": {
                 ".element-shape": {
-                  "class": "element-shape hasNoOpenThreats isInScope"
+                  "class": "element-shape hasNoOpenThreats isOutOfScope"
                 },
                 "text": {
                   "text": "Web Application Config"
