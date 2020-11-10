@@ -330,7 +330,7 @@
                   "severity": "High",
                   "title": "Insecure SSL Versions/Cyphers and SSL Certificate Security",
                   "type": "Tampering",
-                  "mitigation": "- We have configured Cloudflare to prevent Clients using insecure cyphers and TLS Versions below TLS 1.2 from connecting.\n\n- We utilize the Expect-CT Header and have Certificate Monitoring setup to prevent and monitor the issuing of unauthorized SSL certificates. \n\n- Further, we add HTTP Strict Transport Security (HSTS) headers to our requests  to mitigate downgrade and session hijacking attacks."
+                  "mitigation": "- We have configured Cloudflare to prevent Clients using insecure cyphers and TLS Versions below TLS 1.2 from connecting.\n\n- We utilize the Expect-CT Header and have Certificate Monitoring setup to prevent and monitor the issuing of unauthorized SSL certificates. \n\n- Further, we add HTTP Strict Transport Security (HSTS) headers (Strict-Transport-Security) to our requests  to mitigate downgrade and session hijacking attacks."
                 }
               ],
               "attrs": {
