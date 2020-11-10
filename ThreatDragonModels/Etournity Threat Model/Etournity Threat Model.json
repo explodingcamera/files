@@ -402,6 +402,16 @@
               "isEncrypted": true,
               "isPublicNetwork": true,
               "protocol": "HTTP/S",
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "type": "Tampering",
+                  "title": "Unencrypted Origin Traffic",
+                  "description": "While the connection to cloudflare was encrypted, the request was sent from there over an unencryped connection to our servers.",
+                  "mitigation": "We've deployed SSL Certificates signed by cloudflare to our API Servers to encrypt the connection."
+                }
+              ],
               "attrs": {
                 ".marker-target": {
                   "class": "marker-target hasNoOpenThreats isInScope"
@@ -467,6 +477,24 @@
               "id": "f1279b82-3f90-46e6-a428-dd5e0e4d3dec",
               "z": 15,
               "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Denial of service",
+                  "title": "High-Complexity Queries",
+                  "description": "A GraphQL query can take arbitrarily many actions, and thus take an arbitrarily large amount of server resources",
+                  "mitigation": "We limit GraphQL queries to a specific cost. Each action has an assigned amount of \"points\" and requests taking up too many of these get rejected."
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "High",
+                  "type": "Information disclosure",
+                  "title": "Inconsistent Authorization Checks",
+                  "description": "There are multiple different paths to access data using a graphql query and this can lead to instances where users can request information they shouldn't have access to.\n\nThis has led to the possible exposure of sensitive user information in early version of the platform.",
+                  "mitigation": "This has been mitigated by using graphql-shield combined with our own rbac implementation to protect resources on a per-field basis."
+                }
+              ],
               "attrs": {
                 ".element-shape": {
                   "class": "element-shape hasNoOpenThreats isInScope"
